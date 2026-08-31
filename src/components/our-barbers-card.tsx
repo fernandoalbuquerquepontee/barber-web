@@ -5,17 +5,22 @@ export interface OurBarberCardProps {
   id?: number | string;
   name: string;
   specialty: string;
+  avatarUrl: string | undefined;
 }
 
-export function OurBarberCard({ name, specialty }: OurBarberCardProps) {
+export function OurBarberCard({
+  name,
+  specialty,
+  avatarUrl,
+}: OurBarberCardProps) {
   return (
     <Card className="w-full">
       <CardContent className="flex flex-col items-center space-y-3">
         <div>
           <img
-            src="https://github.com/shadcn.png"
-            alt="Barber Image"
-            className="h-16 w-16 rounded-full"
+            src={avatarUrl}
+            alt={name}
+            className="h-16 w-16 rounded-full shadow"
           />
         </div>
 
