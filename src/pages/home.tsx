@@ -28,12 +28,12 @@ export function HomePage() {
               </h3>
 
               <div className="flex w-full items-center justify-between gap-4 pt-8">
-                {barbers.map((barber: OurBarberCardProps) => (
+                {barbers?.map((barber: OurBarberCardProps) => (
                   <OurBarberCard
                     key={barber.id}
                     name={barber.name}
                     specialty={barber.specialty}
-                    avatarUrl={barber.avatarUrl}
+                    avatarUrl={barber.avatarUrl || ""}
                   />
                 ))}
               </div>
