@@ -1,4 +1,5 @@
 import { useGetAvailableBarbers, useGetServices } from "@/api/hooks/barber";
+import { AppointmentTabs } from "@/components/appointment-tab";
 import { BarbersAndServicesTab } from "@/components/barbers-and-services-tab";
 import { Header } from "@/components/header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +25,9 @@ export function HomePage() {
               services={services ?? []}
             />
           </TabsContent>
-          <TabsContent value="appointment"></TabsContent>
+          <TabsContent value="appointment">
+            <AppointmentTabs />
+          </TabsContent>
           <TabsContent value="history"></TabsContent>
         </Tabs>
       </div>
