@@ -1,12 +1,10 @@
-import {
-  OurBarberCard,
-  type OurBarberCardProps,
-} from "@/components/our-barbers-card";
+import { OurBarberCard } from "@/components/our-barbers-card";
 import { ServicesPriceTable } from "@/components/services-price-table";
+import type { Barber } from "@/types/barber";
 import type { Service } from "@/types/service";
 
 export interface BarbersAndServicesTabProps {
-  barbers: OurBarberCardProps[];
+  barbers: Barber[];
   services: Service[];
 }
 
@@ -22,13 +20,8 @@ export function BarbersAndServicesTab({
       </h3>
 
       <div className="flex w-full items-center justify-between gap-4 pt-8">
-        {barbers?.map((barber: OurBarberCardProps) => (
-          <OurBarberCard
-            key={barber.id}
-            name={barber.name}
-            specialty={barber.specialty}
-            avatarUrl={barber.avatarUrl || ""}
-          />
+        {barbers?.map((barber) => (
+          <OurBarberCard key={barber.id} barber={barber} />
         ))}
       </div>
 
