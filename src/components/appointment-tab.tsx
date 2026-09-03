@@ -1,6 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useQueryState } from "nuqs";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 
 import { useGetAvailableHours } from "@/api/hooks/appointments";
 import { Calendar } from "@/components/ui/calendar";
@@ -14,12 +18,19 @@ import {
   CardTitle,
 } from "./ui/card";
 
+const formSchema = z.object({
+  date: z.string(),
+  hour: z.string(),
+  barberId: z.string().min(1, "Selecione um barbeiro."),
+  serviceId: z.string().min(1, "Selecione um serviço."),
+});
+
 export function AppointmentTabs() {
   const [dateParam, setDateParam] = useQueryState("date", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
     clearOnDefault: false,
   });
-
+  const [hour, setHour] = useQueryState("hour");
   const selectedDate = parseISO(dateParam);
 
   const handleSelectDate = (newDate: Date | undefined) => {
@@ -30,8 +41,32 @@ export function AppointmentTabs() {
 
   const { data: availableHours } = useGetAvailableHours(dateParam);
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      date: dateParam,
+      hour: hour || "",
+      barberId: "",
+      serviceId: "",
+    },
+  });
+
+  useEffect(() => {
+    form.setValue("date", dateParam);
+  }, [dateParam, form]);
+
+  useEffect(() => {
+    if (hour) {
+      form.setValue("hour", hour);
+    }
+  }, [hour, form]);
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log(data);
+  }
+
   return (
-    <div className="pt-8">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="pt-8">
       <h1 className="text-lg font-medium">Reservar horário</h1>
       <h3 className="text-muted-foreground text-sm">
         Escolha a data e o horário para o seu atendimento.
@@ -68,21 +103,32 @@ export function AppointmentTabs() {
               })}
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex w-full flex-wrap items-center gap-2">
-            {/* PEGAR HORÁRIOS DISPONÍVEIS */}
-            {availableHours?.map((hour: string, index: number) => (
-              <Button
-                key={index}
-                variant="secondary"
-                size="lg"
-                className="px-7"
-              >
-                {hour}
-              </Button>
-            ))}
-          </CardContent>
+          <Controller
+            control={form.control}
+            name="hour"
+            render={({ field }) => (
+              <CardContent className="flex w-full flex-wrap items-center gap-2">
+                {/* PEGAR HORÁRIOS DISPONÍVEIS */}
+                {availableHours?.map((h: string, index: number) => (
+                  <Button
+                    key={index}
+                    type="button"
+                    variant={field.value === h ? "default" : "secondary"}
+                    size="lg"
+                    className="px-7"
+                    onClick={() => {
+                      setHour(h);
+                      field.onChange(h);
+                    }}
+                  >
+                    {h}
+                  </Button>
+                ))}
+              </CardContent>
+            )}
+          />
         </Card>
       </div>
-    </div>
+    </form>
   );
 }
