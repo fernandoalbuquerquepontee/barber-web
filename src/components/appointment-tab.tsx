@@ -8,6 +8,7 @@ import {
   useGetAvailableBarbers,
   useGetAvailableHours,
 } from "@/api/hooks/appointments";
+import { useGetServices } from "@/api/hooks/barber";
 import { Calendar } from "@/components/ui/calendar";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -16,6 +17,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
@@ -51,6 +53,7 @@ export function AppointmentTabs() {
   const selectedDate = parseISO(selectedDateString);
 
   const { data: availableHours } = useGetAvailableHours(selectedDateString);
+  const { data: services } = useGetServices();
   const { data: availableBarbers } = useGetAvailableBarbers(
     selectedDateString,
     selectedHour,
@@ -136,57 +139,107 @@ export function AppointmentTabs() {
           </Card>
         </div>
         {/* FINALIZE SUA RESERVA */}
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>Finalize sua reserva</CardTitle>
-            <CardDescription>
-              Escolha o barbeiro e o serviço desejado.
-            </CardDescription>
-          </CardHeader>
-          <Controller
-            control={form.control}
-            name="barberId"
-            render={({ field }) => (
-              <CardContent>
-                <div className="flex flex-col gap-3">
+        {selectedDateString && selectedHour && (
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Finalize sua reserva</CardTitle>
+              <CardDescription>
+                Escolha o barbeiro e o serviço desejado.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-5">
+                <div className="space-y-3">
                   <h2 className="text=[#E4E4E7] text-sm font-medium">
                     Escolha o Barbeiro
                   </h2>
-
-                  <div className="flex w-full items-center gap-3">
-                    {availableBarbers?.map((barber) => (
-                      <Button
-                        key={barber.id}
-                        type="button"
-                        size="lg"
-                        className="flex items-center gap-2 rounded-full"
-                        variant={
-                          field.value === barber.id ? "default" : "secondary"
-                        }
-                        onClick={() => {
-                          field.onChange(barber.id);
-                        }}
-                      >
-                        <Avatar size="sm">
-                          <AvatarImage src={barber.avatarUrl} />
-                          <AvatarFallback>
-                            {barber.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                              .substring(0, 2)
-                              .toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm">{barber.name}</span>
-                      </Button>
-                    ))}
-                  </div>
+                  <Controller
+                    control={form.control}
+                    name="barberId"
+                    render={({ field }) => (
+                      <div className="flex w-full items-center gap-3">
+                        {availableBarbers?.map((barber) => (
+                          <Button
+                            key={barber.id}
+                            type="button"
+                            size="lg"
+                            className="flex items-center gap-2 rounded-full"
+                            variant={
+                              field.value === barber.id
+                                ? "default"
+                                : "secondary"
+                            }
+                            onClick={() => {
+                              field.onChange(barber.id);
+                            }}
+                          >
+                            <Avatar size="sm">
+                              <AvatarImage src={barber.avatarUrl} />
+                              <AvatarFallback>
+                                {barber.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")
+                                  .substring(0, 2)
+                                  .toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="text-sm">{barber.name}</span>
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  />
                 </div>
-              </CardContent>
-            )}
-          />
-        </Card>
+
+                <div className="space-y-3">
+                  <h2 className="text=[#E4E4E7] text-sm font-medium">
+                    Escolha o Serviço
+                  </h2>
+
+                  <Controller
+                    control={form.control}
+                    name="serviceId"
+                    render={({ field }) => (
+                      <div className="flex items-center gap-4">
+                        {services?.map((service) => (
+                          <Button
+                            key={service.id}
+                            type="button"
+                            variant="outline"
+                            size="lg"
+                            className="flex h-auto flex-col items-start gap-1 px-8 py-3"
+                            onClick={() => field.onChange(service.id)}
+                          >
+                            <span className="text-sm font-medium">
+                              {service.name}
+                            </span>
+
+                            <span className="text-muted-foreground text-sm">
+                              {new Intl.NumberFormat("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              }).format(Number(service.price))}
+                            </span>
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button
+                size="lg"
+                type="submit"
+                onClick={form.handleSubmit(onSubmit)}
+              >
+                Confirmar Reserva
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
       </div>
     </form>
   );
