@@ -1,8 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import * as z from "zod";
+import { Controller, useWatch } from "react-hook-form";
 
 import {
   useGetAvailableBarbers,
@@ -10,6 +8,7 @@ import {
 } from "@/api/hooks/appointments";
 import { useGetServices } from "@/api/hooks/barber";
 import { Calendar } from "@/components/ui/calendar";
+import { useCreateAppointmentForm } from "@/forms/hooks/appoitment";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -22,23 +21,8 @@ import {
   CardTitle,
 } from "./ui/card";
 
-const formSchema = z.object({
-  date: z.string(),
-  hour: z.string(),
-  barberId: z.string().min(1, "Selecione um barbeiro."),
-  serviceId: z.string().min(1, "Selecione um serviço."),
-});
-
 export function AppointmentTabs() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      date: format(new Date(), "yyyy-MM-dd"),
-      hour: "",
-      barberId: "",
-      serviceId: "",
-    },
-  });
+  const { form, onSubmit } = useCreateAppointmentForm();
 
   const selectedDateString = useWatch({
     control: form.control,
@@ -58,10 +42,6 @@ export function AppointmentTabs() {
     selectedDateString,
     selectedHour,
   );
-
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-  }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="pt-8">
@@ -139,7 +119,7 @@ export function AppointmentTabs() {
           </Card>
         </div>
         {/* FINALIZE SUA RESERVA */}
-        {selectedDateString && selectedHour && (
+        {!!selectedDateString && !!selectedHour && (
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Finalize sua reserva</CardTitle>
@@ -206,7 +186,11 @@ export function AppointmentTabs() {
                           <Button
                             key={service.id}
                             type="button"
-                            variant="outline"
+                            variant={
+                              field.value === service.id
+                                ? "default"
+                                : "secondary"
+                            }
                             size="lg"
                             className="flex h-auto flex-col items-start gap-1 px-8 py-3"
                             onClick={() => field.onChange(service.id)}
@@ -233,6 +217,7 @@ export function AppointmentTabs() {
               <Button
                 size="lg"
                 type="submit"
+                className="ml-auto"
                 onClick={form.handleSubmit(onSubmit)}
               >
                 Confirmar Reserva
