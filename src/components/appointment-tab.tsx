@@ -9,6 +9,7 @@ import {
 import { useGetServices } from "@/api/hooks/barber";
 import { Calendar } from "@/components/ui/calendar";
 import { useCreateAppointmentForm } from "@/forms/hooks/appoitment";
+import { formatCurrency } from "@/helpers/currency";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -200,10 +201,7 @@ export function AppointmentTabs() {
                             </span>
 
                             <span className="text-muted-foreground text-sm">
-                              {new Intl.NumberFormat("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              }).format(Number(service.price))}
+                              {formatCurrency(service.price)}
                             </span>
                           </Button>
                         ))}

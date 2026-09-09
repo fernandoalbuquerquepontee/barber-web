@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatCurrency } from "@/helpers/currency";
 import type { Service } from "@/types/service";
 
 interface ServicesPriceTableProps {
@@ -26,10 +27,7 @@ export function ServicesPriceTable({ services }: ServicesPriceTableProps) {
           <TableRow key={service.id}>
             <TableCell className="font-medium">{service.name}</TableCell>
             <TableCell className="text-right">
-              {new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(Number(service.price))}
+              {formatCurrency(service.price)}
             </TableCell>
           </TableRow>
         ))}
