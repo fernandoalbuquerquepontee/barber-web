@@ -12,9 +12,9 @@ export const publicApi = axios.create({
 protectedApi.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      window.location.href = "/auth";
-    }
+    // if (error.response?.status === 401) {
+    //   window.location.href = "/auth";
+    // }
     return Promise.reject(error);
   },
 );
