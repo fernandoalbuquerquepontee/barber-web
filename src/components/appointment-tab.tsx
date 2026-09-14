@@ -1,5 +1,4 @@
-import { format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { parseISO } from "date-fns";
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
@@ -22,6 +21,7 @@ import { formatCurrency } from "@/helpers/currency";
 import { authClient } from "@/lib/auth-client";
 
 import { DateSelectorCard } from "./date-selector-card";
+import { HourSelectorCard } from "./hour-selector-card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -87,44 +87,11 @@ export function AppointmentTabs() {
               <DateSelectorCard form={form} selectedDate={selectedDate} />
 
               {/* CARD HORÁRIOS */}
-              <Card className="w-full">
-                <CardHeader>
-                  <CardTitle>Horários disponíveis</CardTitle>
-                  <CardDescription>
-                    {format(new Date(selectedDate), "dd 'de' MMMM 'de' yyyy", {
-                      locale: ptBR,
-                    })}
-                  </CardDescription>
-                </CardHeader>
-                <Controller
-                  control={form.control}
-                  name="hour"
-                  render={({ field, fieldState }) => (
-                    <CardContent className="flex w-full flex-wrap items-center gap-2">
-                      {/* PEGAR HORÁRIOS DISPONÍVEIS */}
-                      {availableHours?.map((h: string, index: number) => (
-                        <Button
-                          key={index}
-                          type="button"
-                          variant={field.value === h ? "default" : "secondary"}
-                          size="lg"
-                          className="px-7"
-                          onClick={() => {
-                            field.onChange(h);
-                          }}
-                        >
-                          {h}
-                        </Button>
-                      ))}
-                      {fieldState.error && (
-                        <span className="text-sm text-red-500">
-                          {fieldState.error.message}
-                        </span>
-                      )}
-                    </CardContent>
-                  )}
-                />
-              </Card>
+              <HourSelectorCard
+                form={form}
+                selectedDate={selectedDate}
+                availableHours={availableHours}
+              />
             </div>
             {/* FINALIZE SUA RESERVA */}
             {!!selectedDateString && !!selectedHour && (
