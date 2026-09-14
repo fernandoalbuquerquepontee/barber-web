@@ -36,6 +36,16 @@ export function AppointmentTabs() {
     name: "hour",
   });
 
+  const selectedBarber = useWatch({
+    control: form.control,
+    name: "barberId",
+  });
+
+  const selectedService = useWatch({
+    control: form.control,
+    name: "serviceId",
+  });
+
   const selectedDate = parseISO(selectedDateString);
 
   const { data: availableHours } = useGetAvailableHours(selectedDateString);
@@ -197,49 +207,51 @@ export function AppointmentTabs() {
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <h2 className="text=[#E4E4E7] text-sm font-medium">
-                        Escolha o Serviço
-                      </h2>
+                    {selectedBarber && (
+                      <div className="space-y-3">
+                        <h2 className="text=[#E4E4E7] text-sm font-medium">
+                          Escolha o Serviço
+                        </h2>
 
-                      <Controller
-                        control={form.control}
-                        name="serviceId"
-                        render={({ field, fieldState }) => (
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-4">
-                              {services?.map((service) => (
-                                <Button
-                                  key={service.id}
-                                  type="button"
-                                  variant={
-                                    field.value === service.id
-                                      ? "default"
-                                      : "secondary"
-                                  }
-                                  size="lg"
-                                  className="flex h-auto flex-col items-start gap-1 px-8 py-3"
-                                  onClick={() => field.onChange(service.id)}
-                                >
-                                  <span className="text-sm font-medium">
-                                    {service.name}
-                                  </span>
+                        <Controller
+                          control={form.control}
+                          name="serviceId"
+                          render={({ field, fieldState }) => (
+                            <div className="flex flex-col gap-1">
+                              <div className="flex items-center gap-4">
+                                {services?.map((service) => (
+                                  <Button
+                                    key={service.id}
+                                    type="button"
+                                    variant={
+                                      field.value === service.id
+                                        ? "default"
+                                        : "secondary"
+                                    }
+                                    size="lg"
+                                    className="flex h-auto flex-col items-start gap-1 px-8 py-3"
+                                    onClick={() => field.onChange(service.id)}
+                                  >
+                                    <span className="text-sm font-medium">
+                                      {service.name}
+                                    </span>
 
-                                  <span className="text-muted-foreground text-sm">
-                                    {formatCurrency(service.price)}
-                                  </span>
-                                </Button>
-                              ))}
+                                    <span className="text-muted-foreground text-sm">
+                                      {formatCurrency(service.price)}
+                                    </span>
+                                  </Button>
+                                ))}
+                              </div>
+                              {fieldState.error && (
+                                <span className="text-sm text-red-500">
+                                  {fieldState.error.message}
+                                </span>
+                              )}
                             </div>
-                            {fieldState.error && (
-                              <span className="text-sm text-red-500">
-                                {fieldState.error.message}
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      />
-                    </div>
+                          )}
+                        />
+                      </div>
+                    )}
                   </div>
                 </CardContent>
                 <CardFooter>
@@ -248,6 +260,13 @@ export function AppointmentTabs() {
                     type="submit"
                     className="ml-auto"
                     onClick={form.handleSubmit(onSubmit)}
+                    disabled={
+                      form.formState.isSubmitting ||
+                      !selectedDateString ||
+                      !selectedHour ||
+                      !selectedBarber ||
+                      !selectedService
+                    }
                   >
                     Confirmar Reserva
                   </Button>
