@@ -1,5 +1,7 @@
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { CheckCircle2 } from "lucide-react";
+import { useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
 
 import {
@@ -8,6 +10,14 @@ import {
 } from "@/api/hooks/appointments";
 import { useGetServices } from "@/api/hooks/barber";
 import { Calendar } from "@/components/ui/calendar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useCreateAppointmentForm } from "@/forms/hooks/appoitment";
 import { formatCurrency } from "@/helpers/currency";
 import { authClient } from "@/lib/auth-client";
@@ -24,7 +34,12 @@ import {
 } from "./ui/card";
 
 export function AppointmentTabs() {
-  const { form, onSubmit } = useCreateAppointmentForm();
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const { form, onSubmit } = useCreateAppointmentForm({
+    onSuccess: () => {
+      setIsSuccessDialogOpen(true);
+    },
+  });
 
   const selectedDateString = useWatch({
     control: form.control,
@@ -278,6 +293,31 @@ export function AppointmentTabs() {
       ) : (
         <p>O usuário não está logado.</p>
       )}
+      <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="h-6 w-6 text-green-500" />
+              Reserva Confirmada!
+            </DialogTitle>
+            <DialogDescription>
+              Seu horário foi agendado com sucesso no sistema.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-end">
+            <Button
+              type="button"
+              variant="default"
+              onClick={() => {
+                setIsSuccessDialogOpen(false);
+                form.reset();
+              }}
+            >
+              Concluir
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -8,7 +8,13 @@ import { authClient } from "@/lib/auth-client";
 
 import { createAppointmentSchema } from "../schemas/appointment";
 
-export const useCreateAppointmentForm = () => {
+interface UseCreateAppointmentFormProps {
+  onSuccess?: () => void;
+}
+
+export const useCreateAppointmentForm = ({
+  onSuccess,
+}: UseCreateAppointmentFormProps = {}) => {
   const { mutateAsync: createAppointment } = useCreateAppointment();
   const { data: session } = authClient.useSession();
 
@@ -34,6 +40,9 @@ export const useCreateAppointmentForm = () => {
       status: "PENDING",
     };
     await createAppointment(payload);
+    if (onSuccess) {
+      onSuccess();
+    }
   }
 
   return { form, onSubmit };
