@@ -9,7 +9,6 @@ import {
   useGetAvailableHours,
 } from "@/api/hooks/appointments";
 import { useGetServices } from "@/api/hooks/barber";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +21,7 @@ import { useCreateAppointmentForm } from "@/forms/hooks/appoitment";
 import { formatCurrency } from "@/helpers/currency";
 import { authClient } from "@/lib/auth-client";
 
+import { DateSelectorCard } from "./date-selector-card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -84,42 +84,7 @@ export function AppointmentTabs() {
           <div className="grid w-full gap-6 pt-6">
             {/* CARD CALENDÁRIO */}
             <div className="flex gap-5">
-              <Card className="w-full">
-                <CardHeader>
-                  <CardTitle>Selecione a data</CardTitle>
-                  <CardDescription>
-                    Dias disponíveis para atendimento.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Controller
-                    control={form.control}
-                    name="date"
-                    render={({ field, fieldState }) => (
-                      <div>
-                        <Calendar
-                          mode="single"
-                          selected={selectedDate}
-                          onSelect={(newDate) => {
-                            if (newDate) {
-                              field.onChange(format(newDate, "yyyy-MM-dd"));
-                              form.setValue("hour", "");
-                            }
-                          }}
-                          required
-                          disabled={{ before: new Date() }}
-                          className="rounded-lg border"
-                        />
-                        {fieldState.error && (
-                          <span className="text-sm text-red-500">
-                            {fieldState.error.message}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  />
-                </CardContent>
-              </Card>
+              <DateSelectorCard form={form} selectedDate={selectedDate} />
 
               {/* CARD HORÁRIOS */}
               <Card className="w-full">
