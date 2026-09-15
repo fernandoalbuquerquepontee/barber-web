@@ -81,10 +81,9 @@ export function AppointmentTabs() {
 
           <div className="grid w-full gap-6 pt-6">
             {/* CARD CALENDÁRIO */}
-            <div className="flex gap-5">
+            <div className="flex flex-col gap-5 md:flex-row">
               <DateSelectorCard form={form} selectedDate={selectedDate} />
 
-              {/* CARD HORÁRIOS */}
               <HourSelectorCard
                 form={form}
                 selectedDate={selectedDate}
