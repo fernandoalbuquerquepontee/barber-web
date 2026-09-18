@@ -19,7 +19,8 @@ export function Header() {
   const handleGoogleLogin = async () => {
     await signIn.social({
       provider: "google",
-      callbackURL: window.location.href,
+      callbackURL: "https://barber-pro-umber.vercel.app/",
+      errorCallbackURL: "https://barber-pro-umber.vercel.app/",
     });
   };
 
