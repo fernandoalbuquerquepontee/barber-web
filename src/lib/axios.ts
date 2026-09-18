@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export const protectedApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080",
+  baseURL: "https://barber-pro-umber.vercel.app",
   withCredentials: true,
 });
 
 export const publicApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080",
+  baseURL: "https://barber-pro-umber.vercel.app",
 });
 
 protectedApi.interceptors.response.use(
