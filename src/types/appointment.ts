@@ -11,3 +11,12 @@ export interface Appointment {
     name: string;
   };
 }
+
+export interface CreateAppointmentInput {
+  serviceId: string;
+  userId: string;
+  barberId: string;
+  date: string;
+  hour: string;
+  status: string;
+}

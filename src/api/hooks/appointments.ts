@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { protectedApi } from "@/lib/axios";
-import type { Appointment } from "@/types/appointment";
+import type { Appointment, CreateAppointmentInput } from "@/types/appointment";
 import type { Barber } from "@/types/barber";
 
 export const useCreateAppointment = () => {
@@ -9,7 +9,7 @@ export const useCreateAppointment = () => {
 
   return useMutation({
     mutationKey: ["create-appointment"],
-    mutationFn: async (data: Appointment) => {
+    mutationFn: async (data: CreateAppointmentInput) => {
       const response = await protectedApi.post("/appointments", data);
       return response.data;
     },

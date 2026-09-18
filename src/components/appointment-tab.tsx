@@ -16,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useCreateAppointmentForm } from "@/forms/hooks/appoitment";
+import { useCreateAppointmentForm } from "@/forms/hooks/appointment";
 import { authClient } from "@/lib/auth-client";
 
 import { DateSelectorCard } from "./date-selector-card";
