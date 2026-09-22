@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://barberpro-ap33.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 export const protectedApi = axios.create({
   baseURL: API_URL,
