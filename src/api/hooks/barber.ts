@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { publicApi } from "@/lib/axios";
+import { protectedApi, publicApi } from "@/lib/axios";
 import type { Service } from "@/types/service";
 
 export const useGetAvailableBarbers = () => {
@@ -21,6 +21,21 @@ export const useGetServices = () => {
       const response = await publicApi.get<Service[]>("/barbers/services");
 
       return response.data;
+    },
+  });
+};
+
+export const useDeleteBarber = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["delete-barber"],
+    mutationFn: async (userId: string | undefined) => {
+      const response = await protectedApi.delete(`/barbers/${userId}`);
+
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["barbers"] });
     },
   });
 };
