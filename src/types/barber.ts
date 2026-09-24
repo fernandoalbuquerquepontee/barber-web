@@ -5,8 +5,8 @@ import type { createAppointmentSchema } from "@/forms/schemas/appointment";
 export type AppointmentFormValues = z.infer<typeof createAppointmentSchema>;
 
 export interface Barber {
-  id?: string;
+  id: string;
   name: string;
   specialty: string;
-  avatarUrl: string | undefined;
+  avatarUrl: string;
 }

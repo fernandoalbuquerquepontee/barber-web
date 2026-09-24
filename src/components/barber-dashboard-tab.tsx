@@ -1,4 +1,5 @@
 import { PencilIcon, TrashIcon } from "lucide-react";
+import { useState } from "react";
 
 import { useDeleteBarber } from "@/api/hooks/barber";
 import {
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Barber } from "@/types/barber";
 
+import { AddBarberButton } from "./add-barber-button";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -20,6 +22,8 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Dialog } from "./ui/dialog";
+import { UpsertBarberDialog } from "./upsert-barber-dialog";
 
 interface BarberDashboardTabProps {
   barbers: Barber[];
@@ -27,6 +31,7 @@ interface BarberDashboardTabProps {
 
 export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
   const { mutateAsync: deleteBarber } = useDeleteBarber();
+  const [editingBarber, setEditingBarber] = useState<Barber | null>(null);
 
   return (
     <div className="pt-8">
@@ -47,9 +52,9 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
               </CardDescription>
             </div>
 
-            <Button>Criar Barbeiro</Button>
+            <AddBarberButton />
           </CardHeader>
-          <CardContent className="flex items-center gap-4">
+          <CardContent className="flex w-full items-center gap-4">
             {barbers.map((barber) => (
               <DropdownMenu key={barber.id}>
                 <DropdownMenuTrigger
@@ -69,8 +74,12 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
                 ></DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <PencilIcon />
+                    {/* BOTÃO DE EDITAR: Altera o estado para abrir o modal de forma limpa fora do dropdown */}
+                    <DropdownMenuItem
+                      onClick={() => setEditingBarber(barber)}
+                      className="w-full cursor-pointer"
+                    >
+                      <PencilIcon className="mr-2 h-4 w-4" />
                       Edit
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
@@ -90,6 +99,12 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
           </CardContent>
         </Card>
       </div>
+      <Dialog
+        open={!!editingBarber}
+        onOpenChange={(open) => !open && setEditingBarber(null)}
+      >
+        <UpsertBarberDialog barber={editingBarber ?? undefined} />
+      </Dialog>
     </div>
   );
 }

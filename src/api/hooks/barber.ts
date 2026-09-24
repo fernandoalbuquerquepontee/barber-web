@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type z from "zod";
 
+import type { createBarberSchema } from "@/forms/schemas/barber";
 import { protectedApi, publicApi } from "@/lib/axios";
 import type { Service } from "@/types/service";
+
+type CreateBarberInput = z.infer<typeof createBarberSchema>;
+type UpdateBarberInput = z.infer<typeof createBarberSchema> & { id: string };
 
 export const useGetAvailableBarbers = () => {
   return useQuery({
@@ -31,6 +36,36 @@ export const useDeleteBarber = () => {
     mutationKey: ["delete-barber"],
     mutationFn: async (userId: string | undefined) => {
       const response = await protectedApi.delete(`/barbers/${userId}`);
+
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["barbers"] });
+    },
+  });
+};
+
+export const useCreateBarber = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["create-barber"],
+    mutationFn: async (data: CreateBarberInput) => {
+      const response = await protectedApi.post("/barbers", data);
+
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["barbers"] });
+    },
+  });
+};
+
+export const useUpdateBarber = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["update-barber"],
+    mutationFn: async ({ id, ...data }: UpdateBarberInput) => {
+      const response = await protectedApi.patch(`/barbers/${id}`, data);
 
       return response.data;
     },
