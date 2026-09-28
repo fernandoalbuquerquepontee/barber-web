@@ -12,7 +12,7 @@ export function AddBarberButton() {
       <DialogTrigger>
         <Button>
           <Plus />
-          Adicionar médico
+          Adicionar barbeiro
         </Button>
       </DialogTrigger>
       <UpsertBarberDialog />

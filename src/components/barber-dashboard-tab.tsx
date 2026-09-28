@@ -74,7 +74,6 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
                 ></DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
-                    {/* BOTÃO DE EDITAR: Altera o estado para abrir o modal de forma limpa fora do dropdown */}
                     <DropdownMenuItem
                       onClick={() => setEditingBarber(barber)}
                       className="w-full cursor-pointer"
