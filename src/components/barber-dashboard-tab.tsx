@@ -13,7 +13,9 @@ import {
 import type { Barber } from "@/types/barber";
 
 import { AddBarberButton } from "./add-barber-button";
+import { AnnualRevenueChart } from "./annual-revenue-chart";
 import { CardsInfoArea } from "./barber-info-cards-area";
+import { MonthlyRevenueChart } from "./monthly-revenue-chart";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -103,6 +105,12 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
           </CardContent>
         </Card>
       </div>
+
+      <div className="flex min-w-full gap-4 space-y-2 pt-6">
+        <MonthlyRevenueChart />
+        <AnnualRevenueChart />
+      </div>
+
       <Dialog
         open={!!editingBarber}
         onOpenChange={(open) => !open && setEditingBarber(null)}

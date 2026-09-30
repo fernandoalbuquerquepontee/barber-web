@@ -12,3 +12,14 @@ export const useGetMetrics = () => {
     },
   });
 };
+
+export const useRevenueMonthly = () => {
+  return useQuery({
+    queryKey: ["get-revenue-monthly"],
+    queryFn: async () => {
+      const response = await protectedApi.get("/dashboard/revenue/monthly");
+
+      return response.data;
+    },
+  });
+};
