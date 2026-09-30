@@ -13,6 +13,7 @@ import {
 import type { Barber } from "@/types/barber";
 
 import { AddBarberButton } from "./add-barber-button";
+import { CardsInfoArea } from "./barber-info-cards-area";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -39,6 +40,10 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
       <h3 className="text-muted-foreground text-sm">
         Agenda de atendimentos e equipe.
       </h3>
+
+      <div className="space-y-2 pt-6">
+        <CardsInfoArea />
+      </div>
 
       <div className="space-y-2 pt-6">
         <Card>
