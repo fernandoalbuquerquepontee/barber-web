@@ -15,6 +15,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
+import { Skeleton } from "./ui/skeleton";
+
 const chartConfig = {
   revenue: {
     label: "Renda",
@@ -26,9 +28,7 @@ export function MonthlyRevenueChart() {
   const { data: chartData, isLoading } = useRevenueMonthly();
 
   if (isLoading) {
-    return (
-      <div className="min-h-full w-full animate-pulse rounded-lg bg-zinc-700"></div>
-    );
+    return <Skeleton className="w-full" />;
   }
 
   return (
