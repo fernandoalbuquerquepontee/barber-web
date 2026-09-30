@@ -106,7 +106,7 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
         </Card>
       </div>
 
-      <div className="flex min-w-full gap-4 space-y-2 pt-6">
+      <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
         <MonthlyRevenueChart />
         <AnnualRevenueChart />
       </div>

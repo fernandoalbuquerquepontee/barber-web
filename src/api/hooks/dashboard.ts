@@ -23,3 +23,14 @@ export const useRevenueMonthly = () => {
     },
   });
 };
+
+export const useRevenueAnnual = () => {
+  return useQuery({
+    queryKey: ["get-revenue-annual"],
+    queryFn: async () => {
+      const response = await protectedApi.get("/dashboard/revenue/annual");
+
+      return response.data;
+    },
+  });
+};
