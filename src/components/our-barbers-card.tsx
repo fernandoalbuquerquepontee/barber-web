@@ -1,7 +1,6 @@
 import type { Barber } from "@/types/barber";
 
-import { Button } from "./ui/button";
-import { Card, CardContent, CardFooter } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 
 export interface OurBarberCardProps {
   barber: Barber;
@@ -26,11 +25,6 @@ export function OurBarberCard({ barber }: OurBarberCardProps) {
           </p>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button variant="outline" className="w-full">
-          Escolher
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
