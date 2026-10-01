@@ -14,6 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatCurrency } from "@/helpers/currency";
 
 import { Skeleton } from "./ui/skeleton";
 
@@ -50,7 +51,24 @@ export function MonthlyRevenueChart() {
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={
+                <ChartTooltipContent
+                  formatter={(value, _name, item) => {
+                    return (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-xs"
+                          style={{ backgroundColor: item.color }}
+                        />
+                        <span className="text-muted-foreground">Renda</span>
+                        <span className="text-foreground ml-auto font-mono font-medium">
+                          {formatCurrency(Number(value))}
+                        </span>
+                      </>
+                    );
+                  }}
+                />
+              }
             />
             <Bar dataKey="revenue" fill="var(--color-revenue)" radius={8} />
           </BarChart>
