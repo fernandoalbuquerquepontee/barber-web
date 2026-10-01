@@ -65,8 +65,12 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
             {barbers.map((barber) => (
               <DropdownMenu key={barber.id}>
                 <DropdownMenuTrigger
-                  render={
-                    <Button className="p-0 px-3 py-7" variant="outline">
+                  render={(props) => (
+                    <Button
+                      className="p-0 px-3 py-7"
+                      variant="outline"
+                      {...props}
+                    >
                       <Avatar size="lg">
                         <AvatarImage src={barber.avatarUrl} />
                       </Avatar>
@@ -77,8 +81,8 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
                         </p>
                       </div>
                     </Button>
-                  }
-                ></DropdownMenuTrigger>
+                  )}
+                />
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
                     <DropdownMenuItem

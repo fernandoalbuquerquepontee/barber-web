@@ -9,12 +9,14 @@ export function AddBarberButton() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>
-        <Button>
-          <Plus />
-          Adicionar barbeiro
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button>
+            <Plus />
+            Adicionar barbeiro
+          </Button>
+        }
+      />
       <UpsertBarberDialog />
     </Dialog>
   );
