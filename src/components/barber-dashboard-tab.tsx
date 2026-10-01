@@ -2,6 +2,7 @@ import { Loader2, Pencil, Trash, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
 import { useDeleteBarber } from "@/api/hooks/barber";
+import { useGetTeamPerformance } from "@/api/hooks/dashboard";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { formatCurrency } from "@/helpers/currency";
 import type { Barber } from "@/types/barber";
 
 import { AddBarberButton } from "./add-barber-button";
@@ -41,6 +43,10 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
   const { mutateAsync: deleteBarber, isPending: isDeletingBarberLoading } =
     useDeleteBarber();
 
+  const { data: teamPerformance } = useGetTeamPerformance();
+
+  console.log(teamPerformance);
+
   const [editingBarber, setEditingBarber] = useState<Barber | null>(null);
 
   return (
@@ -59,8 +65,8 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
         <AnnualRevenueChart />
       </div>
 
-      <div className="space-y-2 pt-6">
-        <Card>
+      <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+        <Card className="w-full">
           <CardHeader className="flex items-center justify-between">
             <div>
               <CardTitle className="font-medium">
@@ -73,7 +79,7 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
 
             <AddBarberButton />
           </CardHeader>
-          <CardContent className="">
+          <CardContent>
             <ScrollArea className="h-50 w-full p-2">
               {barbers.map((barber) => (
                 <div
@@ -136,6 +142,47 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
                   </div>
                 </div>
               ))}
+            </ScrollArea>
+          </CardContent>
+        </Card>
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Desempenho da equipe</CardTitle>
+            <CardDescription>
+              Atendimentos e receita por barbeiro.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-50 w-full p-2">
+              <div className="flex flex-col gap-3">
+                {teamPerformance?.map((barber) => (
+                  <div
+                    className="flex items-center justify-between"
+                    key={barber.id}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Avatar size="lg">
+                        <AvatarImage src={barber.avatarUrl || ""} />
+                        <AvatarFallback>
+                          {barber.name.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div className="flex flex-col">
+                        <p className="text-sm font-medium">{barber.name}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {barber.totalAppointments} clientes atendidos
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium">
+                        {formatCurrency(barber.revenue)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </ScrollArea>
           </CardContent>
         </Card>
