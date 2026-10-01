@@ -1,22 +1,26 @@
-import { PencilIcon, TrashIcon } from "lucide-react";
+import { Loader2, Pencil, Trash, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
 import { useDeleteBarber } from "@/api/hooks/barber";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { Barber } from "@/types/barber";
 
 import { AddBarberButton } from "./add-barber-button";
 import { AnnualRevenueChart } from "./annual-revenue-chart";
 import { CardsInfoArea } from "./barber-info-cards-area";
 import { MonthlyRevenueChart } from "./monthly-revenue-chart";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -26,6 +30,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Dialog } from "./ui/dialog";
+import { ScrollArea } from "./ui/scroll-area";
 import { UpsertBarberDialog } from "./upsert-barber-dialog";
 
 interface BarberDashboardTabProps {
@@ -33,7 +38,9 @@ interface BarberDashboardTabProps {
 }
 
 export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
-  const { mutateAsync: deleteBarber } = useDeleteBarber();
+  const { mutateAsync: deleteBarber, isPending: isDeletingBarberLoading } =
+    useDeleteBarber();
+
   const [editingBarber, setEditingBarber] = useState<Barber | null>(null);
 
   return (
@@ -45,6 +52,11 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
 
       <div className="space-y-2 pt-6">
         <CardsInfoArea />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+        <MonthlyRevenueChart />
+        <AnnualRevenueChart />
       </div>
 
       <div className="space-y-2 pt-6">
@@ -61,58 +73,72 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
 
             <AddBarberButton />
           </CardHeader>
-          <CardContent className="flex w-full items-center gap-4">
-            {barbers.map((barber) => (
-              <DropdownMenu key={barber.id}>
-                <DropdownMenuTrigger
-                  render={(props) => (
+          <CardContent className="">
+            <ScrollArea className="h-50 w-full p-2">
+              {barbers.map((barber) => (
+                <div
+                  className="flex h-fit items-center justify-between py-4 first:pt-0 last:pb-0"
+                  key={barber.id}
+                >
+                  <div className="flex items-center gap-3">
+                    <Avatar size="lg">
+                      <AvatarImage src={barber.avatarUrl || ""} />
+                      <AvatarFallback>
+                        {barber.name.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="text-sm">{barber.name}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
                     <Button
-                      className="p-0 px-3 py-7"
-                      variant="outline"
-                      {...props}
-                    >
-                      <Avatar size="lg">
-                        <AvatarImage src={barber.avatarUrl} />
-                      </Avatar>
-                      <div className="flex flex-col items-start">
-                        <h3 className="text-sm font-medium">{barber.name}</h3>
-                        <p className="text-muted-foreground text-xs">
-                          {barber.specialty}
-                        </p>
-                      </div>
-                    </Button>
-                  )}
-                />
-                <DropdownMenuContent>
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem
+                      size="icon-lg"
+                      variant="ghost"
                       onClick={() => setEditingBarber(barber)}
-                      className="w-full cursor-pointer"
                     >
-                      <PencilIcon className="mr-2 h-4 w-4" />
-                      Edit
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onClick={() => deleteBarber(barber.id)}
-                    >
-                      <TrashIcon />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ))}
+                      <Pencil />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger
+                        render={
+                          <Button size="icon-lg" variant="ghost">
+                            <Trash />
+                          </Button>
+                        }
+                      />
+                      <AlertDialogContent size="sm">
+                        <AlertDialogHeader>
+                          <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                            <Trash2Icon />
+                          </AlertDialogMedia>
+                          <AlertDialogTitle>Delete barbeiro?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Esta ação excluirá permanentemente o cadastro deste
+                            barbeiro. Esta operação não pode ser desfeita.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel variant="outline">
+                            Cancelar
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={async () => await deleteBarber(barber.id)}
+                          >
+                            {isDeletingBarberLoading && (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            {isDeletingBarberLoading ? "Excluindo" : "Excluir"}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </div>
+              ))}
+            </ScrollArea>
           </CardContent>
         </Card>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
-        <MonthlyRevenueChart />
-        <AnnualRevenueChart />
       </div>
 
       <Dialog
