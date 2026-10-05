@@ -26,13 +26,6 @@ export function BarbersAndServicesTab({
       </div>
 
       <div className="pt-8">
-        <div>
-          <h1 className="text-lg font-medium">Serviços & Preços</h1>
-          <h3 className="text-muted-foreground text-sm">
-            Escolha o serviço que deseja agendar.
-          </h3>
-        </div>
-
         <ServicesPriceTable services={services} />
       </div>
     </div>
