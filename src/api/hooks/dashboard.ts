@@ -3,6 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { protectedApi } from "@/lib/axios";
 import type { TeamPerformance } from "@/types/dashboard";
 
+export interface DailyRevenue {
+  date: string;
+  revenue: number;
+}
+
 export const useGetMetrics = () => {
   return useQuery({
     queryKey: ["get-metrics"],
@@ -48,3 +53,18 @@ export const useGetTeamPerformance = () => {
     },
   });
 };
+
+export function useDailyRevenue(range: string) {
+  return useQuery({
+    queryKey: ["daily-revenue", range],
+    queryFn: async () => {
+      const response = await protectedApi.get<DailyRevenue[]>(
+        "/dashboard/revenue/perDay",
+        {
+          params: { range },
+        },
+      );
+      return response.data;
+    },
+  });
+}

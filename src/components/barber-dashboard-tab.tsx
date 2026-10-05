@@ -21,6 +21,7 @@ import type { Barber } from "@/types/barber";
 import { AddBarberButton } from "./add-barber-button";
 import { AnnualRevenueChart } from "./annual-revenue-chart";
 import { CardsInfoArea } from "./barber-info-cards-area";
+import { DailyRevenueChart } from "./daily-revenue-chart";
 import { MonthlyRevenueChart } from "./monthly-revenue-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -63,6 +64,10 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
       <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
         <MonthlyRevenueChart />
         <AnnualRevenueChart />
+      </div>
+
+      <div className="pt-6">
+        <DailyRevenueChart />
       </div>
 
       <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
