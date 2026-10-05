@@ -1,5 +1,7 @@
 "use client";
 
+import { format, parseISO } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
@@ -106,11 +108,8 @@ export function DailyRevenueChart() {
                 tickMargin={8}
                 minTickGap={32}
                 tickFormatter={(value) => {
-                  const date = new Date(value);
-                  return date.toLocaleDateString("pt-BR", {
-                    month: "short",
-                    day: "numeric",
-                  });
+                  const date = parseISO(value);
+                  return format(date, "d 'de' MMM", { locale: ptBR });
                 }}
               />
               <ChartTooltip
@@ -118,10 +117,9 @@ export function DailyRevenueChart() {
                 content={
                   <ChartTooltipContent
                     labelFormatter={(value) => {
-                      return new Date(value).toLocaleDateString("pt-BR", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
+                      const date = parseISO(value);
+                      return format(date, "d 'de' MMMM 'de' yyyy", {
+                        locale: ptBR,
                       });
                     }}
                     formatter={(value) => [
@@ -134,7 +132,7 @@ export function DailyRevenueChart() {
               />
               <Area
                 dataKey="revenue"
-                type="natural"
+                type="monotone"
                 fill="url(#fillRevenue)"
                 stroke="var(--color-revenue)"
               />
