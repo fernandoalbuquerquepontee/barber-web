@@ -71,3 +71,28 @@ export const useGetAllUserAppointments = (userId: string | undefined) => {
     },
   });
 };
+
+export const useCancellAppointment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["cancel-appointment"],
+    mutationFn: async (appointmentId: string) => {
+      const response = await protectedApi.patch(
+        `/appointments/${appointmentId}/cancel`,
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["get-appointment-history"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["available-hours"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["available-barbers"],
+      });
+    },
+  });
+};

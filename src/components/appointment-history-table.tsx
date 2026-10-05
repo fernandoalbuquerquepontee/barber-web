@@ -1,6 +1,17 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { MoreHorizontal } from "lucide-react";
 
+import { useCancellAppointment } from "@/api/hooks/appointments";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -20,12 +31,14 @@ interface ServicesPriceTableProps {
 const statusTranslation: Record<string, string> = {
   PENDING: "Pendente",
   CONFIRMED: "Concluído",
-  CANCELED: "Cancelado",
+  CANCELLED: "Cancelado",
 };
 
 export function AppointmentHistoryTable({
   appointmentsHistory,
 }: ServicesPriceTableProps) {
+  const { mutate: cancelAppointment } = useCancellAppointment();
+
   return (
     <Table className="w-full">
       <TableHeader>
@@ -34,6 +47,7 @@ export function AppointmentHistoryTable({
           <TableHead>Barbeiro</TableHead>
           <TableHead>Serviço</TableHead>
           <TableHead className="text-right">Status</TableHead>
+          <TableHead className="w-12.5"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -60,6 +74,31 @@ export function AppointmentHistoryTable({
               >
                 {statusTranslation[appointment.status] || appointment.status}
               </Badge>
+            </TableCell>
+
+            <TableCell>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                      <span className="sr-only">Abrir menu</span>
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent align="end">
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                    {appointment.status === "PENDING" && (
+                      <DropdownMenuItem
+                        onClick={() => cancelAppointment(appointment.id)}
+                      >
+                        Cancelar Reserva
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TableCell>
           </TableRow>
         ))}
