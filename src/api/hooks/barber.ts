@@ -3,6 +3,7 @@ import type z from "zod";
 
 import type { createBarberSchema } from "@/forms/schemas/barber";
 import { protectedApi, publicApi } from "@/lib/axios";
+import type { Barber } from "@/types/barber";
 import type { Service } from "@/types/service";
 
 type CreateBarberInput = z.infer<typeof createBarberSchema>;
@@ -12,7 +13,7 @@ export const useGetAvailableBarbers = () => {
   return useQuery({
     queryKey: ["barbers"],
     queryFn: async () => {
-      const response = await publicApi.get("/barbers");
+      const response = await publicApi.get<Barber[]>("/barbers");
 
       return response.data;
     },

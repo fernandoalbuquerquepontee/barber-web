@@ -2,7 +2,6 @@ import { useGetAllUserAppointments } from "@/api/hooks/appointments";
 import { useGetAvailableBarbers, useGetServices } from "@/api/hooks/barber";
 import { AppointmentHistoryTab } from "@/components/appointment-history-tab";
 import { AppointmentTabs } from "@/components/appointment-tab";
-import { BarberDashboardTab } from "@/components/barber-dashboard-tab";
 import { BarbersAndServicesTab } from "@/components/barbers-and-services-tab";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -29,15 +28,10 @@ export function HomePage() {
               <TabsTrigger value="barbers">Cortes & Barbeiros</TabsTrigger>
               <TabsTrigger value="appointment">Reservar Horário</TabsTrigger>
               <TabsTrigger value="history">Agendamentos</TabsTrigger>
-              {session?.user.role === "admin" && (
-                <TabsTrigger value="painel-admin">
-                  Painel do Barbeiro
-                </TabsTrigger>
-              )}
             </TabsList>
             <TabsContent value="barbers">
               <BarbersAndServicesTab
-                barbers={barbers}
+                barbers={barbers ?? []}
                 services={services ?? []}
               />
             </TabsContent>
@@ -48,9 +42,6 @@ export function HomePage() {
               <AppointmentHistoryTab
                 appointmentsHistory={appointmentsHistory ?? []}
               />
-            </TabsContent>
-            <TabsContent value="painel-admin">
-              <BarberDashboardTab barbers={barbers} />
             </TabsContent>
           </Tabs>
         </div>

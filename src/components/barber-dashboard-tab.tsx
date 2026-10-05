@@ -46,8 +46,6 @@ export function BarberDashboardTab({ barbers }: BarberDashboardTabProps) {
 
   const { data: teamPerformance } = useGetTeamPerformance();
 
-  console.log(teamPerformance);
-
   const [editingBarber, setEditingBarber] = useState<Barber | null>(null);
 
   return (

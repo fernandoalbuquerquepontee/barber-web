@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
+import { DashboardPage } from "./pages/dashboard";
 import { HomePage } from "./pages/home";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
