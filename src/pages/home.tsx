@@ -20,7 +20,7 @@ export function HomePage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="container mx-auto flex min-h-screen flex-col">
+      <div className="container mx-auto flex grow flex-col">
         <Header />
 
         <div className="py-11">
