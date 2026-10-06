@@ -1,4 +1,4 @@
-import { LogInIcon, LogOutIcon } from "lucide-react";
+import { LogInIcon, LogOutIcon, Moon, Sun } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signIn, signOut, useSession } from "@/lib/auth-client";
+import { useTheme } from "@/providers/theme-provider";
 
 import logo from "../assets/logo.png";
 import avatar_icon from "../assets/user-photo.png";
@@ -15,6 +16,7 @@ import { Badge } from "./ui/badge";
 
 export function Header() {
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
 
   const handleGoogleLogin = async () => {
     await signIn.social({
@@ -34,6 +36,10 @@ export function Header() {
     });
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   return (
     <div className="border-w-[0.5px] flex w-full items-center justify-between border-b py-5">
       <div>
@@ -47,15 +53,24 @@ export function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Avatar>
+              <Avatar className="cursor-pointer">
                 <AvatarImage src={session?.user.image || avatar_icon} />
                 <AvatarFallback>
-                  {session?.user.name.substring(0, 2).toUpperCase()}
+                  {session?.user?.name?.substring(0, 2).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
             }
           />
           <DropdownMenuContent className="w-full">
+            <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer">
+              {theme === "light" ? (
+                <Moon className="mr-2 h-4 w-4" />
+              ) : (
+                <Sun className="mr-2 h-4 w-4" />
+              )}
+              {theme === "light" ? "Tema Escuro" : "Tema Claro"}
+            </DropdownMenuItem>
+
             {session ? (
               <DropdownMenuItem
                 onClick={handleLogout}

@@ -10,21 +10,24 @@ import { BrowserRouter } from "react-router-dom";
 
 import { DashboardPage } from "./pages/dashboard";
 import { HomePage } from "./pages/home";
+import { ThemeProvider } from "./providers/theme-provider";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <NuqsAdapter>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-          </Routes>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </NuqsAdapter>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <NuqsAdapter>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </NuqsAdapter>
+    </ThemeProvider>
   </StrictMode>,
 );
