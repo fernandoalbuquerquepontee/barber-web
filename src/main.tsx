@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
+import { Toaster } from "./components/ui/toast";
 import { DashboardPage } from "./pages/dashboard";
 import { HomePage } from "./pages/home";
 import { ThemeProvider } from "./providers/theme-provider";
@@ -25,6 +26,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
             </Routes>
+            <Toaster />
           </BrowserRouter>
         </QueryClientProvider>
       </NuqsAdapter>
