@@ -54,58 +54,75 @@ export function AppointmentHistoryTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {appointmentsHistory.map((appointment) => (
-              <TableRow key={appointment.id}>
-                <TableCell className="font-medium">
-                  {format(new Date(appointment.date), "dd/MM/yyyy 'às' HH:mm", {
-                    locale: ptBR,
-                  })}
-                </TableCell>
-                <TableCell>{appointment.barber.name}</TableCell>
-                <TableCell>{appointment.service.name}</TableCell>
-                <TableCell className="text-right">
-                  <Badge
-                    variant={
-                      ({
-                        PENDING: "secondary",
-                        CONFIRMED: "default",
-                        CANCELED: "destructive",
-                      }[appointment.status] as
-                        "default" | "secondary" | "destructive" | "outline") ||
-                      "outline"
-                    }
-                  >
-                    {statusTranslation[appointment.status] ||
-                      appointment.status}
-                  </Badge>
-                </TableCell>
-
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger
-                      render={
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Abrir menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
+            {appointmentsHistory && appointmentsHistory.length > 0 ? (
+              appointmentsHistory.map((appointment) => (
+                <TableRow key={appointment.id}>
+                  <TableCell className="font-medium">
+                    {format(
+                      new Date(appointment.date),
+                      "dd/MM/yyyy 'às' HH:mm",
+                      {
+                        locale: ptBR,
+                      },
+                    )}
+                  </TableCell>
+                  <TableCell>{appointment.barber.name}</TableCell>
+                  <TableCell>{appointment.service.name}</TableCell>
+                  <TableCell className="text-right">
+                    <Badge
+                      variant={
+                        ({
+                          PENDING: "secondary",
+                          CONFIRMED: "default",
+                          CANCELLED: "destructive",
+                        }[appointment.status] as
+                          | "default"
+                          | "secondary"
+                          | "destructive"
+                          | "outline") || "outline"
                       }
-                    />
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuGroup>
-                        <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                        {appointment.status === "PENDING" && (
-                          <DropdownMenuItem
-                            onClick={() => cancelAppointment(appointment.id)}
-                          >
-                            Cancelar Reserva
-                          </DropdownMenuItem>
-                        )}
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                    >
+                      {statusTranslation[appointment.status] ||
+                        appointment.status}
+                    </Badge>
+                  </TableCell>
+
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger
+                        render={
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Abrir menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        }
+                      />
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuGroup>
+                          <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                          {appointment.status === "PENDING" && (
+                            <DropdownMenuItem
+                              onClick={() => cancelAppointment(appointment.id)}
+                            >
+                              Cancelar Reserva
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="text-muted-foreground h-24 text-center"
+                >
+                  Você ainda não possui nenhum agendamento.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CardContent>

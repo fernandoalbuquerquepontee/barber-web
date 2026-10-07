@@ -17,7 +17,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useCreateAppointmentForm } from "@/forms/hooks/appointment";
-import { authClient } from "@/lib/auth-client";
 
 import { DateSelectorCard } from "./date-selector-card";
 import { FinalizeReservationCard } from "./finalize-reservation-card";
@@ -62,8 +61,6 @@ export function AppointmentTabs() {
     selectedHour,
   );
 
-  const { data: session } = authClient.useSession();
-
   const isSubmitDisabled =
     form.formState.isSubmitting ||
     !selectedDateString ||
@@ -73,40 +70,37 @@ export function AppointmentTabs() {
 
   return (
     <div>
-      {session ? (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="pt-8">
-          <h1 className="text-lg font-medium">Reservar horário</h1>
-          <h3 className="text-muted-foreground text-sm">
-            Escolha a data e o horário para o seu atendimento.
-          </h3>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="pt-8">
+        <h1 className="text-lg font-medium">Reservar horário</h1>
+        <h3 className="text-muted-foreground text-sm">
+          Escolha a data e o horário para o seu atendimento.
+        </h3>
 
-          <div className="grid w-full gap-6 pt-6">
-            {/* CARD CALENDÁRIO */}
-            <div className="flex flex-col gap-5 md:flex-row">
-              <DateSelectorCard form={form} selectedDate={selectedDate} />
+        <div className="grid w-full gap-6 pt-6">
+          {/* CARD CALENDÁRIO */}
+          <div className="flex flex-col gap-5 md:flex-row">
+            <DateSelectorCard form={form} selectedDate={selectedDate} />
 
-              <HourSelectorCard
-                form={form}
-                selectedDate={selectedDate}
-                availableHours={availableHours}
-                isLoading={isAvailableHoursLoading}
-              />
-            </div>
-            {/* FINALIZE SUA RESERVA */}
-            {!!selectedDateString && !!selectedHour && (
-              <FinalizeReservationCard
-                form={form}
-                availableBarbers={availableBarbers}
-                services={services}
-                selectedBarber={selectedBarber}
-                isSubmitDisabled={isSubmitDisabled}
-              />
-            )}
+            <HourSelectorCard
+              form={form}
+              selectedDate={selectedDate}
+              availableHours={availableHours}
+              isLoading={isAvailableHoursLoading}
+            />
           </div>
-        </form>
-      ) : (
-        <p>O usuário não está logado.</p>
-      )}
+          {/* FINALIZE SUA RESERVA */}
+          {!!selectedDateString && !!selectedHour && (
+            <FinalizeReservationCard
+              form={form}
+              availableBarbers={availableBarbers}
+              services={services}
+              selectedBarber={selectedBarber}
+              isSubmitDisabled={isSubmitDisabled}
+            />
+          )}
+        </div>
+      </form>
+
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
