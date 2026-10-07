@@ -3,11 +3,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { useWatch } from "react-hook-form";
 
-import {
-  useGetAvailableBarbers,
-  useGetAvailableHours,
-} from "@/api/hooks/appointments";
-import { useGetServices } from "@/api/hooks/barber";
+import { useGetAvailableHours } from "@/api/hooks/appointments";
 import {
   Dialog,
   DialogContent,
@@ -41,32 +37,10 @@ export function AppointmentTabs() {
     name: "hour",
   });
 
-  const selectedBarber = useWatch({
-    control: form.control,
-    name: "barberId",
-  });
-
-  const selectedService = useWatch({
-    control: form.control,
-    name: "serviceId",
-  });
-
   const selectedDate = parseISO(selectedDateString);
 
   const { data: availableHours, isLoading: isAvailableHoursLoading } =
     useGetAvailableHours(selectedDateString);
-  const { data: services } = useGetServices();
-  const { data: availableBarbers } = useGetAvailableBarbers(
-    selectedDateString,
-    selectedHour,
-  );
-
-  const isSubmitDisabled =
-    form.formState.isSubmitting ||
-    !selectedDateString ||
-    !selectedHour ||
-    !selectedBarber ||
-    !selectedService;
 
   return (
     <div>
@@ -90,13 +64,7 @@ export function AppointmentTabs() {
           </div>
           {/* FINALIZE SUA RESERVA */}
           {!!selectedDateString && !!selectedHour && (
-            <FinalizeReservationCard
-              form={form}
-              availableBarbers={availableBarbers}
-              services={services}
-              selectedBarber={selectedBarber}
-              isSubmitDisabled={isSubmitDisabled}
-            />
+            <FinalizeReservationCard form={form} />
           )}
         </div>
       </form>
