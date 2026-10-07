@@ -32,7 +32,7 @@ export function DateSelectorCard({
           control={form.control}
           name="date"
           render={({ field, fieldState }) => (
-            <div>
+            <div className="w-full h-full">
               <Calendar
                 mode="single"
                 selected={selectedDate}
@@ -44,7 +44,7 @@ export function DateSelectorCard({
                 }}
                 required
                 disabled={{ before: new Date() }}
-                className="rounded-lg border"
+                className="w-full rounded-lg border"
               />
               {fieldState.error && (
                 <span className="text-sm text-red-500">

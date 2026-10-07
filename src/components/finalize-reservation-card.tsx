@@ -105,7 +105,7 @@ export function FinalizeReservationCard({
             />
           </div>
 
-          {!!barberId && (
+          {barberId && (
             <div className="space-y-3">
               <h2 className="text=[#E4E4E7] text-sm font-medium">
                 Escolha o Serviço
