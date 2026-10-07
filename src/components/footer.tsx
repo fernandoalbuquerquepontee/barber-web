@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="w-full border-t-2 border-zinc-900 px-4 py-3 text-center">
+    <footer className="border-border w-full border-t px-4 py-5 text-center">
       <p className="text-muted-foreground text-xs">
         BARBER&CO. · Agendamento premium
       </p>
