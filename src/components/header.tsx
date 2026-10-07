@@ -1,4 +1,5 @@
 import { LogInIcon, LogOutIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
@@ -30,9 +31,9 @@ export function Header() {
 
   return (
     <div className="border-w-[0.5px] flex w-full items-center justify-between border-b py-5">
-      <div>
+      <Link to="/">
         <img src={logo} alt="Logo" width={150} height={150} />
-      </div>
+      </Link>
       <div className="flex items-center">
         {session ? (
           <DropdownMenu>
