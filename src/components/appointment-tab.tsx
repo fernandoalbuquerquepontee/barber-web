@@ -54,7 +54,8 @@ export function AppointmentTabs() {
 
   const selectedDate = parseISO(selectedDateString);
 
-  const { data: availableHours } = useGetAvailableHours(selectedDateString);
+  const { data: availableHours, isLoading: isAvailableHoursLoading } =
+    useGetAvailableHours(selectedDateString);
   const { data: services } = useGetServices();
   const { data: availableBarbers } = useGetAvailableBarbers(
     selectedDateString,
@@ -88,6 +89,7 @@ export function AppointmentTabs() {
                 form={form}
                 selectedDate={selectedDate}
                 availableHours={availableHours}
+                isLoading={isAvailableHoursLoading}
               />
             </div>
             {/* FINALIZE SUA RESERVA */}
