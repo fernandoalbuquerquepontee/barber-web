@@ -37,7 +37,13 @@ export function Header() {
   return (
     <div className="border-w-[0.5px] flex w-full items-center justify-between border-b py-5">
       <Link to="/">
-        <img src={logo} alt="Logo" width={150} height={150} />
+        <img
+          src={logo}
+          alt="Logo"
+          width={150}
+          height={150}
+          className="invert dark:invert-0"
+        />
       </Link>
 
       <div className="flex items-center">
