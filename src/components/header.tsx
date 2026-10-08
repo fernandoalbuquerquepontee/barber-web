@@ -49,7 +49,7 @@ export function Header() {
       <div className="flex items-center gap-5 text-sm">
         <Link to="/">Barbeiros</Link>
         <Link to="/appointment">Reservar Horário</Link>
-        <Link to="/history">Reservar Horário</Link>
+        <Link to="/history">Minhas Reservas</Link>
       </div>
 
       <div className="flex items-center">
