@@ -9,8 +9,9 @@ import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
 import { Toaster } from "./components/ui/toast";
-import { DashboardPage } from "./pages/dashboard";
-import { HomePage } from "./pages/home";
+import { AppointmentPage } from "./pages/appointment";
+import { AppointmentHistoryPage } from "./pages/appointment-history";
+import { BarbersPage } from "./pages/barbers";
 import { ThemeProvider } from "./providers/theme-provider";
 
 const queryClient = new QueryClient();
@@ -23,8 +24,9 @@ createRoot(document.getElementById("root")!).render(
           <ReactQueryDevtools initialIsOpen={false} />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/" element={<BarbersPage />} />
+              <Route path="/appointment" element={<AppointmentPage />} />
+              <Route path="/history" element={<AppointmentHistoryPage />} />
             </Routes>
             <Toaster />
           </BrowserRouter>

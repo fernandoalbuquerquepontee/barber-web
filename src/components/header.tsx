@@ -46,6 +46,12 @@ export function Header() {
         />
       </Link>
 
+      <div className="flex items-center gap-5 text-sm">
+        <Link to="/">Barbeiros</Link>
+        <Link to="/appointment">Reservar Horário</Link>
+        <Link to="/history">Reservar Horário</Link>
+      </div>
+
       <div className="flex items-center">
         <Dialog>
           <DropdownMenu>
