@@ -8,6 +8,8 @@ import { createRoot } from "react-dom/client";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
+import { AppSidebar } from "./components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "./components/ui/toast";
 import { AppointmentPage } from "./pages/appointment";
 import { AppointmentHistoryPage } from "./pages/appointment-history";
@@ -28,7 +30,17 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<BarbersPage />} />
               <Route path="/appointment" element={<AppointmentPage />} />
               <Route path="/history" element={<AppointmentHistoryPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <SidebarProvider>
+                    <AppSidebar />
+                    <SidebarInset>
+                      <DashboardPage />
+                    </SidebarInset>
+                  </SidebarProvider>
+                }
+              />
             </Routes>
             <Toaster />
           </BrowserRouter>
