@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import Hero from "../assets/barbershop-hero.png";
 
 export function HeroCard() {
@@ -20,12 +22,12 @@ export function HeroCard() {
           Profissionais experientes, ambiente exclusivo e um horário reservado
           para você.
         </p>
-        <a
-          href="/reservar"
+        <Link
+          to="/appointment"
           className="w-fit rounded-md bg-zinc-100 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-white"
         >
           Agendar agora
-        </a>
+        </Link>
       </div>
     </section>
   );
