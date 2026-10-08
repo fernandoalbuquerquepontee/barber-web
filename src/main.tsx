@@ -12,6 +12,7 @@ import { Toaster } from "./components/ui/toast";
 import { AppointmentPage } from "./pages/appointment";
 import { AppointmentHistoryPage } from "./pages/appointment-history";
 import { BarbersPage } from "./pages/barbers";
+import { DashboardPage } from "./pages/dashboard";
 import { ThemeProvider } from "./providers/theme-provider";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<BarbersPage />} />
               <Route path="/appointment" element={<AppointmentPage />} />
               <Route path="/history" element={<AppointmentHistoryPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
             </Routes>
             <Toaster />
           </BrowserRouter>
