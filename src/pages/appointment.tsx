@@ -22,11 +22,12 @@ import { useCreateAppointmentForm } from "@/forms/hooks/appointment";
 
 export function AppointmentPage() {
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
-  const { form, onSubmit } = useCreateAppointmentForm({
-    onSuccess: () => {
-      setIsSuccessDialogOpen(true);
-    },
-  });
+  const { form, onSubmit, createAppointmentIsLoading } =
+    useCreateAppointmentForm({
+      onSuccess: () => {
+        setIsSuccessDialogOpen(true);
+      },
+    });
 
   const selectedDateString = useWatch({
     control: form.control,
@@ -71,7 +72,7 @@ export function AppointmentPage() {
             </div>
             {/* FINALIZE SUA RESERVA */}
             {!!selectedDateString && !!selectedHour && (
-              <FinalizeReservationCard form={form} />
+              <FinalizeReservationCard form={form} createAppointmentIsLoading={createAppointmentIsLoading} />
             )}
           </div>
         </form>

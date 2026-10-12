@@ -15,7 +15,10 @@ interface UseCreateAppointmentFormProps {
 export const useCreateAppointmentForm = ({
   onSuccess,
 }: UseCreateAppointmentFormProps = {}) => {
-  const { mutateAsync: createAppointment } = useCreateAppointment();
+  const {
+    mutateAsync: createAppointment,
+    isPending: createAppointmentIsLoading,
+  } = useCreateAppointment();
   const { data: session } = authClient.useSession();
 
   const form = useForm<z.infer<typeof createAppointmentSchema>>({
@@ -45,5 +48,5 @@ export const useCreateAppointmentForm = ({
     }
   }
 
-  return { form, onSubmit };
+  return { form, onSubmit, createAppointmentIsLoading };
 };

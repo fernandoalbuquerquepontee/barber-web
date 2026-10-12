@@ -21,10 +21,12 @@ import { Separator } from "./ui/separator";
 
 interface FinalizeReservationCardProps {
   form: UseFormReturn<AppointmentFormValues>;
+  createAppointmentIsLoading: boolean;
 }
 
 export function FinalizeReservationCard({
   form,
+  createAppointmentIsLoading,
 }: FinalizeReservationCardProps) {
   const [date, hour, barberId, serviceId] = useWatch({
     control: form.control,
@@ -193,9 +195,15 @@ export function FinalizeReservationCard({
           size="lg"
           type="submit"
           className="ml-auto"
-          disabled={isSubmitDisabled}
+          disabled={isSubmitDisabled || createAppointmentIsLoading}
         >
-          Confirmar Reserva
+          {createAppointmentIsLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />A agendar...
+            </>
+          ) : (
+            "Confirmar"
+          )}
         </Button>
       </CardFooter>
     </Card>

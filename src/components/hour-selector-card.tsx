@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Separator } from "./ui/separator";
 
 interface HourSelectorCardProps {
   form: UseFormReturn<AppointmentFormValues>;
@@ -142,6 +143,18 @@ export function HourSelectorCard({
                     </div>
                   </div>
                 )}
+
+                <div>
+                  <Separator />
+
+                  <div className="flex  justify-between pt-4">
+                    <p className="text-[11px] font-medium text-muted-foreground">
+                      Duração estimada: 40 minutos
+                    </p>
+
+                    <p className="text-[11px] font-medium">Horário selecionado: {field.value}</p>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="text-muted-foreground flex w-full items-center justify-center py-6 text-sm">
