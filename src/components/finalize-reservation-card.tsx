@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { Controller, type UseFormReturn, useWatch } from "react-hook-form";
 
 import { useGetAvailableBarbers } from "@/api/hooks/appointments";
@@ -7,6 +7,7 @@ import { formatCurrency } from "@/helpers/currency";
 import type { AppointmentFormValues } from "@/types/barber";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -16,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Separator } from "./ui/separator";
 
 interface FinalizeReservationCardProps {
   form: UseFormReturn<AppointmentFormValues>;
@@ -39,10 +41,14 @@ export function FinalizeReservationCard({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Finalize sua reserva</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-xl font-semibold">
+          Finalize sua reserva
+        </CardTitle>
+        <CardDescription className="text-xs font-medium">
           Escolha o barbeiro e o serviço desejado.
         </CardDescription>
+
+        <Separator className="my-4" />
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-5">
@@ -66,8 +72,12 @@ export function FinalizeReservationCard({
                         <Button
                           key={barber.id}
                           type="button"
-                          size="lg"
-                          className="flex items-center gap-2 rounded-full"
+
+                          className={`flex items-center gap-2 px-5 py-6 transition-all duration-200 ${
+                            field.value === barber.id
+                              ? "opacity-100 shadow-md"
+                              : "opacity-50 grayscale-50 hover:opacity-75"
+                          }`}
                           variant={
                             field.value === barber.id ? "default" : "secondary"
                           }
@@ -75,7 +85,7 @@ export function FinalizeReservationCard({
                             field.onChange(barber.id);
                           }}
                         >
-                          <Avatar size="sm">
+                          <Avatar size="default">
                             <AvatarImage src={barber.avatarUrl} />
                             <AvatarFallback>
                               {barber.name
@@ -86,7 +96,10 @@ export function FinalizeReservationCard({
                                 .toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
-                          <span className="text-sm">{barber.name}</span>
+                          <span className="text-sm font-medium">
+                            {barber.name}
+                          </span>
+                          {field.value === barber.id && <CheckCircle2 />}
                         </Button>
                       ))
                     ) : (
@@ -124,17 +137,42 @@ export function FinalizeReservationCard({
                           variant={
                             field.value === service.id ? "default" : "secondary"
                           }
-                          size="lg"
-                          className="flex h-auto flex-col items-start gap-1 px-8 py-3"
+                          className={`flex h-auto items-start justify-between px-8 py-4 transition-all duration-200 ${
+                            field.value === service.id
+                              ? "opacity-100 shadow-md"
+                              : "opacity-50 hover:opacity-75"
+                          }`}
                           onClick={() => field.onChange(service.id)}
                         >
-                          <span className="text-sm font-medium">
-                            {service.name}
-                          </span>
+                          <div className="flex flex-col gap-1 text-start">
+                            <span className="text-sm font-medium">
+                              {service.name}
+                            </span>
+                            <span
+                              className={`text-sm ${
+                                field.value === service.id
+                                  ? "text-primary-foreground/80"
+                                  : "text-muted-foreground"
+                              }`}
+                            >
+                              {formatCurrency(service.price)}
+                            </span>
+                          </div>
 
-                          <span className="text-muted-foreground text-sm">
-                            {formatCurrency(service.price)}
-                          </span>
+                          <Badge
+                            className={
+                              field.value === service.id
+                                ? "bg-primary-foreground/20 text-primary-foreground border-none"
+                                : "text-muted-foreground"
+                            }
+                            variant={
+                              field.value === service.id
+                                ? "outline"
+                                : "secondary"
+                            }
+                          >
+                            25min
+                          </Badge>
                         </Button>
                       ))}
                     </div>
