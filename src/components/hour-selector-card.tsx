@@ -46,7 +46,7 @@ export function HourSelectorCard({
   );
 
   return (
-    <Card className="w-full">
+    <Card className="flex h-full w-full flex-col">
       <CardHeader>
         <CardTitle>Horários disponíveis</CardTitle>
         <CardDescription>
@@ -59,14 +59,15 @@ export function HourSelectorCard({
         control={form.control}
         name="hour"
         render={({ field, fieldState }) => (
-          <CardContent className="flex w-full flex-wrap items-center gap-2">
+          <CardContent className="flex w-full flex-1 flex-col gap-2">
             {isLoading ? (
               <div className="text-muted-foreground flex w-full items-center justify-center py-6 text-sm">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Buscando horários...
               </div>
             ) : availableHours && availableHours.length > 0 ? (
-              <div className="flex flex-col gap-5">
+              <div className="flex h-full w-full flex-1 flex-col gap-5">
+                {/* MANHÃ */}
                 {groupedHours.morning.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -144,15 +145,17 @@ export function HourSelectorCard({
                   </div>
                 )}
 
-                <div>
+                <div className="mt-auto pt-4">
                   <Separator />
 
-                  <div className="flex  justify-between pt-4">
-                    <p className="text-[11px] font-medium text-muted-foreground">
+                  <div className="flex min-w-full justify-between pt-4">
+                    <p className="text-muted-foreground text-[11px] font-medium">
                       Duração estimada: 40 minutos
                     </p>
 
-                    <p className="text-[11px] font-medium">Horário selecionado: {field.value}</p>
+                    <p className="text-[11px] font-medium">
+                      Horário selecionado: {field.value}
+                    </p>
                   </div>
                 </div>
               </div>
