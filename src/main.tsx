@@ -11,6 +11,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AppSidebar } from "./components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "./components/ui/toast";
+import { FloatingWhatsApp } from "./components/whatsapp-floating-icon";
 import { AppointmentPage } from "./pages/appointment";
 import { AppointmentHistoryPage } from "./pages/appointment-history";
 import { BarbersPage } from "./pages/barbers";
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<BarbersPage />} />
               <Route path="/appointment" element={<AppointmentPage />} />
               <Route path="/history" element={<AppointmentHistoryPage />} />
+
               <Route
                 path="/dashboard"
                 element={
@@ -42,6 +44,7 @@ createRoot(document.getElementById("root")!).render(
                 }
               />
             </Routes>
+            <FloatingWhatsApp />
             <Toaster />
           </BrowserRouter>
         </QueryClientProvider>
