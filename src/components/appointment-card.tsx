@@ -2,6 +2,7 @@ import { format, isPast } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Clock, DollarSign } from "lucide-react";
 
+import { useCancellAppointment } from "@/api/hooks/appointments";
 import { useSession } from "@/lib/auth-client";
 import type { Appointment } from "@/types/appointment";
 
@@ -27,6 +28,7 @@ interface AppointmentCardProps {
 
 export function AppointmentCard({ appointment }: AppointmentCardProps) {
   const { data: session } = useSession();
+  const { mutate: cancelAppointment } = useCancellAppointment();
   const appointmentDate = new Date(appointment.date);
   const passed = isPast(appointmentDate);
 
@@ -173,7 +175,13 @@ export function AppointmentCard({ appointment }: AppointmentCardProps) {
           </div>
         </div>
         <SheetFooter>
-          <Button variant="destructive">Cancelar reserva</Button>
+          <Button
+            onClick={() => cancelAppointment(appointment.id)}
+            disabled={appointment.status !== "PENDING"}
+            variant="destructive"
+          >
+            Cancelar reserva
+          </Button>
           <SheetClose render={<Button>Fechar</Button>} />
         </SheetFooter>
       </SheetContent>
