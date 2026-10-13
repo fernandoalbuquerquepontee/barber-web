@@ -1,5 +1,6 @@
 import { isPast } from "date-fns";
 import { Calendar, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { useGetAllUserAppointments } from "@/api/hooks/appointments";
 import { AppointmentCard } from "@/components/appointment-card";
@@ -51,9 +52,11 @@ export function AppointmentHistoryPage() {
               <Calendar size={16} />
               <span>{appointmentsHistory?.length || 0} visitas</span>
             </div>
-            <Button variant="secondary" className="flex items-center gap-2">
-              <Plus size={16} /> Novo Agendamento
-            </Button>
+            <Link to="/appointment">
+              <Button variant="secondary" className="flex items-center gap-2">
+                <Plus size={16} /> Novo Agendamento
+              </Button>
+            </Link>
           </div>
         </div>
 
