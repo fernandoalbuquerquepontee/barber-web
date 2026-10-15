@@ -8,6 +8,7 @@ import { AnnualRevenueChart } from "@/components/annual-revenue-chart";
 import { CardsInfoArea } from "@/components/barber-info-cards-area";
 import { DailyRevenueChart } from "@/components/daily-revenue-chart";
 import { MonthlyRevenueChart } from "@/components/monthly-revenue-chart";
+import { ScheduleSettings } from "@/components/schedule-settings";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -64,21 +65,21 @@ export function DashboardPage() {
         </div>
 
         {/* Métricas */}
-        <div className="pt-6">
+        <div className="space-y-6 pt-6">
           <div>
             <CardsInfoArea />
           </div>
 
-          <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <MonthlyRevenueChart />
             <AnnualRevenueChart />
           </div>
 
-          <div className="pt-6">
+          <div>
             <DailyRevenueChart />
           </div>
 
-          <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card className="w-full">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
@@ -205,6 +206,9 @@ export function DashboardPage() {
                 </ScrollArea>
               </CardContent>
             </Card>
+          </div>
+          <div className="w-full">
+            <ScheduleSettings />
           </div>
 
           <Dialog

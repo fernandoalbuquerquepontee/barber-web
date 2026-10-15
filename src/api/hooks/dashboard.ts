@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { protectedApi } from "@/lib/axios";
 import type { TeamPerformance } from "@/types/dashboard";
@@ -7,6 +7,14 @@ export interface DailyRevenue {
   date: string;
   revenue: number;
 }
+
+export type DaySchedule = {
+  dayOfWeek: number;
+  label: string;
+  startTime: string;
+  endTime: string;
+  isClosed: boolean;
+};
 
 export const useGetMetrics = () => {
   return useQuery({
@@ -68,3 +76,31 @@ export function useDailyRevenue(range: string) {
     },
   });
 }
+
+export const useGetSchedule = () => {
+  return useQuery({
+    queryKey: ["get-schedule"],
+    queryFn: async () => {
+      const response = await protectedApi.get<DaySchedule[]>(
+        "/dashboard/schedule",
+      );
+      return response.data;
+    },
+  });
+};
+
+export const useUpdateSchedule = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (schedules: DaySchedule[]) => {
+      const response = await protectedApi.put("/dashboard/schedule", {
+        schedules,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["availability"] });
+      queryClient.invalidateQueries({ queryKey: ["get-schedule"] });
+    },
+  });
+};
