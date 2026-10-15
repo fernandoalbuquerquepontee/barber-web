@@ -42,7 +42,7 @@ const items = [
   },
   {
     title: "Agendamentos",
-    url: "/appointments",
+    url: "/dashboard/appointments",
     icon: CalendarDays,
   },
   {
@@ -102,14 +102,12 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
         <SidebarGroup>
           <SidebarGroupLabel>Outros</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="w-full space-y-1">
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={pathname === "/subscription"}>
-                  {/* AJUSTE AQUI: Adicionado 'flex', 'items-center' e 'gap-2' para ficar horizontal */}
                   <Link
                     to="/subscription"
                     className="flex w-full items-center gap-2"
@@ -125,7 +123,6 @@ export function AppSidebar() {
                   <DropdownMenuTrigger
                     render={
                       <SidebarMenuButton className="w-full">
-                        {/* AJUSTE AQUI: Div com flexbox para alinhar o ícone do Sol e a palavra Tema */}
                         <div className="flex w-full items-center gap-2">
                           <Sun className="h-4 w-4 shrink-0" />
                           <span className="font-light">Tema</span>
