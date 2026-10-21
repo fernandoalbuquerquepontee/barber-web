@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { protectedApi } from "@/lib/axios";
+import type { Appointment } from "@/types/appointment";
 import type { TeamPerformance } from "@/types/dashboard";
 
 export interface DailyRevenue {
@@ -101,6 +102,33 @@ export const useUpdateSchedule = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["availability"] });
       queryClient.invalidateQueries({ queryKey: ["get-schedule"] });
+    },
+  });
+};
+
+export const useGetAppointments = () => {
+  return useQuery({
+    queryKey: ["get-appointments"],
+    queryFn: async () => {
+      const response = await protectedApi.get<Appointment[]>(
+        "/dashboard/appointments",
+      );
+      return response.data;
+    },
+  });
+};
+
+export const useDeleteAppointment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (appointmentId: string) => {
+      const response = await protectedApi.delete(
+        `/dashboard/appointments/${appointmentId}`,
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-appointments"] });
     },
   });
 };

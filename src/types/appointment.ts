@@ -10,6 +10,11 @@ export interface Appointment {
   barber: {
     name: string;
   };
+  user: {
+    name: string;
+    image: string | null | undefined;
+    phoneNumber: string;
+  };
 }
 
 export interface CreateAppointmentInput {
