@@ -1,4 +1,5 @@
 import { Loader2, Pencil, Trash2, Trash2Icon } from "lucide-react";
+import { useState } from "react";
 
 import { useDeleteService, useGetServices } from "@/api/hooks/dashboard";
 import { AddServiceButton } from "@/components/add-service-button";
@@ -16,14 +17,19 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { UpsertServiceDialog } from "@/components/upsert-service-dialog";
 import { formatCurrency } from "@/helpers/currency";
+import type { Service } from "@/types/service";
 
 export function ServicesDashboard() {
   const { data: services } = useGetServices();
   const { mutateAsync: deleteService, isPending: isDeletingServiceLoading } =
     useDeleteService();
+
+  const [editingService, setEditingService] = useState<Service | null>(null);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -64,7 +70,10 @@ export function ServicesDashboard() {
                 <Separator />
 
                 <div className="flex items-center gap-3">
-                  <Button variant="ghost">
+                  <Button
+                    variant="ghost"
+                    onClick={() => setEditingService(service)}
+                  >
                     <Pencil className="h-4 w-4" />
                     Editar
                   </Button>
@@ -108,6 +117,13 @@ export function ServicesDashboard() {
             </Card>
           ))}
         </div>
+
+        <Dialog
+          open={!!editingService}
+          onOpenChange={(open) => !open && setEditingService(null)}
+        >
+          <UpsertServiceDialog service={editingService ?? undefined} />
+        </Dialog>
       </div>
     </div>
   );
