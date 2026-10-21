@@ -165,7 +165,7 @@ export const useUpdateService = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...data }: UpdateServiceInput) => {
-      const response = await protectedApi.put(`/dashboard/service/${id}`, {
+      const response = await protectedApi.patch(`/dashboard/services/${id}`, {
         ...data,
       });
       return response.data;
