@@ -15,6 +15,7 @@ import { AppointmentPage } from "./pages/appointment";
 import { AppointmentHistoryPage } from "./pages/appointment-history";
 import { AppointmentsDashboard } from "./pages/appointments-dashboard";
 import { BarbersPage } from "./pages/barbers";
+import { BarbersDashboard } from "./pages/barbers-dashboard";
 import { DashboardPage } from "./pages/dashboard";
 import { ThemeProvider } from "./providers/theme-provider";
 
@@ -49,6 +50,7 @@ createRoot(document.getElementById("root")!).render(
                   path="appointments"
                   element={<AppointmentsDashboard />}
                 />
+                <Route path="barbers" element={<BarbersDashboard />} />
               </Route>
             </Routes>
             <FloatingWhatsApp />

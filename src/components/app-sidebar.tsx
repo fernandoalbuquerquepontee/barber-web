@@ -47,7 +47,7 @@ const items = [
   },
   {
     title: "Barbeiros",
-    url: "/doctors",
+    url: "/dashboard/barbers",
     icon: ScissorsIcon,
   },
   {
