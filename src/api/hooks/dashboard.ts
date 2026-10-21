@@ -1,8 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type z from "zod";
 
+import type { UpsertServiceDialog } from "@/components/upsert-service-dialog";
 import { protectedApi } from "@/lib/axios";
 import type { Appointment } from "@/types/appointment";
 import type { TeamPerformance } from "@/types/dashboard";
+import type { Service } from "@/types/service";
 
 export interface DailyRevenue {
   date: string;
@@ -16,6 +19,8 @@ export type DaySchedule = {
   endTime: string;
   isClosed: boolean;
 };
+
+type UpdateServiceInput = z.infer<typeof UpsertServiceDialog> & { id: string };
 
 export const useGetMetrics = () => {
   return useQuery({
@@ -129,6 +134,44 @@ export const useDeleteAppointment = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-appointments"] });
+    },
+  });
+};
+
+export const useGetServices = () => {
+  return useQuery({
+    queryKey: ["get-services"],
+    queryFn: async () => {
+      const response = await protectedApi.get<Service[]>("/dashboard/services");
+      return response.data;
+    },
+  });
+};
+
+export const useCreateService = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: Omit<Service, "id">) => {
+      const response = await protectedApi.post("/dashboard/services", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-services"] });
+    },
+  });
+};
+
+export const useUpdateService = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, ...data }: UpdateServiceInput) => {
+      const response = await protectedApi.put(`/dashboard/service/${id}`, {
+        ...data,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-services"] });
     },
   });
 };

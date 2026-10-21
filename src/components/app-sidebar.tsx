@@ -52,7 +52,7 @@ const items = [
   },
   {
     title: "Serviços",
-    url: "/patients",
+    url: "/dashboard/services",
     icon: Briefcase,
   },
 ];

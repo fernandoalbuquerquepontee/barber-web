@@ -17,6 +17,7 @@ import { AppointmentsDashboard } from "./pages/appointments-dashboard";
 import { BarbersPage } from "./pages/barbers";
 import { BarbersDashboard } from "./pages/barbers-dashboard";
 import { DashboardPage } from "./pages/dashboard";
+import { ServicesDashboard } from "./pages/services-dashboard";
 import { ThemeProvider } from "./providers/theme-provider";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ createRoot(document.getElementById("root")!).render(
                   element={<AppointmentsDashboard />}
                 />
                 <Route path="barbers" element={<BarbersDashboard />} />
+                <Route path="services" element={<ServicesDashboard />} />
               </Route>
             </Routes>
             <FloatingWhatsApp />
