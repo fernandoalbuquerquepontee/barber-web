@@ -43,7 +43,7 @@ export function BarbersDashboard() {
 
       <div className="container mx-auto max-w-6xl p-4 md:px-8 md:pb-8">
         <div className="flex items-center justify-between">
-          <div>
+          <div className="space-y-1">
             <p className="text-muted-foreground text-xs">B A R B E R & C O.</p>
             <h1 className="text-3xl font-semibold">Barbeiros</h1>
             <h3 className="text-muted-foreground text-base">
