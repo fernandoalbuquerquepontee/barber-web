@@ -175,3 +175,16 @@ export const useUpdateService = () => {
     },
   });
 };
+
+export const useDeleteService = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await protectedApi.delete(`/dashboard/services/${id}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-services"] });
+    },
+  });
+};
