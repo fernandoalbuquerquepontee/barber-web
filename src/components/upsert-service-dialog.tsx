@@ -1,11 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
-import type z from "zod";
 
-import { useCreateService, useUpdateService } from "@/api/hooks/dashboard";
-import { upsertServiceSchema } from "@/schemas/dashboard";
+import { useUpsertServiceForm } from "@/forms/hooks/dashboard";
 import type { Service } from "@/types/service";
 
 import { Button } from "./ui/button";
@@ -19,7 +16,6 @@ import {
 import { Field, FieldGroup } from "./ui/field";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { toast } from "./ui/toast";
 
 interface UpsertServiceDialogProps {
   service?: Service;
@@ -30,49 +26,10 @@ export function UpsertServiceDialog({
   service,
   onSuccess,
 }: UpsertServiceDialogProps) {
-  const isEditing = !!service;
-  const { mutateAsync: createService } = useCreateService();
-  const { mutateAsync: editService } = useUpdateService();
-
-  const form = useForm<z.infer<typeof upsertServiceSchema>>({
-    resolver: zodResolver(upsertServiceSchema),
-    values: service ?? {
-      name: "",
-      price: 0,
-    },
+  const { form, isSubmitting, onSubmit } = useUpsertServiceForm({
+    service,
+    onSuccess,
   });
-
-  const { isSubmitting } = form.formState;
-
-  async function onSubmit(data: z.infer<typeof upsertServiceSchema>) {
-    try {
-      if (isEditing && service) {
-        await editService({ id: service.id, ...data });
-        toast.add({
-          type: "success",
-          description: "Serviço editado com sucesso.",
-        });
-        return;
-      }
-
-      await createService(data);
-      form.reset();
-
-      toast.add({
-        type: "success",
-        description: "Serviço criado com sucesso.",
-      });
-      onSuccess?.();
-    } catch (error) {
-      console.error("Erro ao salvar barbeiro:", error);
-      toast.add({
-        type: "error",
-        description: "Erro ao salvar barbeiro.",
-        priority: "high",
-      });
-    }
-  }
-
   return (
     <DialogContent>
       <DialogHeader>
