@@ -17,7 +17,7 @@ export function AddServiceButton() {
           </Button>
         }
       />
-      <UpsertServiceDialog />
+      <UpsertServiceDialog onSuccess={() => setIsOpen(false)} />
     </Dialog>
   );
 }

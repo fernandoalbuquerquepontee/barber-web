@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import type z from "zod";
@@ -18,12 +19,17 @@ import {
 import { Field, FieldGroup } from "./ui/field";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { toast } from "./ui/toast";
 
 interface UpsertServiceDialogProps {
   service?: Service;
+  onSuccess?: () => void;
 }
 
-export function UpsertServiceDialog({ service }: UpsertServiceDialogProps) {
+export function UpsertServiceDialog({
+  service,
+  onSuccess,
+}: UpsertServiceDialogProps) {
   const isEditing = !!service;
   const { mutateAsync: createService } = useCreateService();
   const { mutateAsync: editService } = useUpdateService();
@@ -36,18 +42,34 @@ export function UpsertServiceDialog({ service }: UpsertServiceDialogProps) {
     },
   });
 
+  const { isSubmitting } = form.formState;
+
   async function onSubmit(data: z.infer<typeof upsertServiceSchema>) {
     try {
       if (isEditing && service) {
         await editService({ id: service.id, ...data });
-        console.log("Editado com sucesso!");
+        toast.add({
+          type: "success",
+          description: "Serviço editado com sucesso.",
+        });
         return;
       }
 
-      console.log("Criado com sucesso!");
       await createService(data);
+      form.reset();
+
+      toast.add({
+        type: "success",
+        description: "Serviço criado com sucesso.",
+      });
+      onSuccess?.();
     } catch (error) {
       console.error("Erro ao salvar barbeiro:", error);
+      toast.add({
+        type: "error",
+        description: "Erro ao salvar barbeiro.",
+        priority: "high",
+      });
     }
   }
 
@@ -108,8 +130,17 @@ export function UpsertServiceDialog({ service }: UpsertServiceDialogProps) {
           />
         </FieldGroup>
         <DialogFooter>
-          <Button type="submit">
-            {service ? "Salvar alterações" : "Criar serviço"}
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Carregando...
+              </>
+            ) : service ? (
+              "Salvar alterações"
+            ) : (
+              "Criar serviço"
+            )}
           </Button>
         </DialogFooter>
       </form>
